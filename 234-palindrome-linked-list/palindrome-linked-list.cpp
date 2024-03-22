@@ -10,26 +10,23 @@
  */
 class Solution {
 public:
+    ListNode* curr;
+    bool solve(ListNode* head){
+        if(head == NULL){
+            return true;
+        }
+
+        bool ans = solve(head->next);
+        if(head->val != curr->val){
+            return false;
+        }
+        curr = curr->next;
+        return ans;
+    }
+
     bool isPalindrome(ListNode* head) {
-        ListNode * curr = head, *prev = NULL, *fast = head;
-        ListNode* temp;
-        while(fast and fast->next){
-            fast = fast->next->next;
-            temp = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = temp;
-        }
-        if(fast != NULL){
-            curr = curr->next;
-        }
-        while(curr and prev){
-            if(curr->val != prev->val){
-                return false;
-            }
-            curr = curr->next;
-            prev = prev->next;
-        }
-        return true;
+        
+        curr = head;
+        return solve(head);
     }
 };
