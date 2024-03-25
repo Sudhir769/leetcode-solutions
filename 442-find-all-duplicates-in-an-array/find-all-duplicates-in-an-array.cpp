@@ -2,17 +2,16 @@ class Solution {
 public:
     vector<int> findDuplicates(vector<int>& nums) {
         vector<int>ans;
-        unordered_map<int, int>mp;
 
-        for(auto it:nums){
-            mp[it]++;
-        }
-
-        for(auto it:mp){
-            if(it.second == 2){
-                ans.push_back(it.first);
+        int n = nums.size();
+        for(int i=0; i<n; i++){
+            int temp = abs(nums[i]);
+            nums[temp-1] = -nums[temp-1];
+            if(nums[temp-1] > 0){
+                ans.push_back(temp);
             }
         }
+
         return ans;
     }
 };
