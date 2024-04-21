@@ -6,6 +6,7 @@ public:
     vector<int> dijkstra(vector<P> adj[], int src, int n){
         priority_queue<P, vector<P>, greater<P>> pq;
         vector<int>dist(n, INT_MAX);
+        vector<int>vis(n, 0);
 
         dist[src] = 0;
         pq.push({0, src});
@@ -14,6 +15,10 @@ public:
             ll currWt = pq.top().first;
             int currNode = pq.top().second;
             pq.pop();
+
+            if(vis[currNode] == 1){
+                continue;
+            }
 
             for(auto it:adj[currNode]){
                 int nextNode = it.first;
@@ -24,6 +29,7 @@ public:
                     pq.push({dist[nextNode], nextNode});
                 }
             }
+            vis[currNode] = 1;
         }
         return dist;
     }
