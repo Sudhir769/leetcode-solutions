@@ -1,33 +1,48 @@
 class Solution {
 public:
-    int findRotateSteps(string ring, string key) {
-        unordered_map<char, vector<int>> positions;
-        for (int i = 0; i < ring.size(); ++i) {
-            positions[ring[i]].push_back(i);
-        }
-        vector<vector<int>> memo(key.size(), vector<int>(ring.size(), -1));
-        return helper(0, 0, positions, key, ring, memo);
+    int countSteps(int ringIndex, int i, int n){
+        int dist = abs(i - ringIndex);
+        int wrap = n - dist;
+        return min(dist, wrap);
     }
-    
-    int helper(int in_index, int pos, unordered_map<char, vector<int>>& positions, string& key, string& ring, vector<vector<int>>& memo) {
-        if (in_index == key.size()) {
-            return 0;
+
+    int findRotateSteps(string ring, string key) {
+        unordered_map<char, vector<int>> mp;
+        int n = ring.length();
+        int m = key.length();
+
+        for(int i=0; i<n; i++){
+            char ch = ring[i];
+            mp[ch].push_back(i);
         }
-        if (memo[in_index][pos] != -1) {
-            return memo[in_index][pos];
-        }
-        int min_steps = INT_MAX;
-        for (int i : positions[key[in_index]]) {
-            int steps;
-            if (i >= pos) {
-                steps = min(i - pos, static_cast<int>(pos + ring.size()) - i);
-            } else {
-                steps = min(pos - i, static_cast<int>(i + ring.size()) - pos);
+
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>>pq;
+        pq.push({0, 0, 0}); // {steps, ri, ki}
+        set<pair<int, int>>vis;
+        int totalSteps = 0;
+
+        while(!pq.empty()){
+            auto vec = pq.top();
+            pq.pop();
+
+            totalSteps = vec[0];
+            int ri = vec[1];
+            int ki = vec[2];
+            char currChar = key[ki];
+
+            if(ki >= m){
+                break;
             }
-            int next_steps = helper(in_index + 1, i, positions, key, ring, memo);
-            min_steps = min(min_steps, steps + next_steps);
+            if(vis.count({ri, ki})){
+                continue;
+            }
+            vis.insert({ri, ki});
+
+            for(auto nextIndex: mp[currChar]){
+                int steps = countSteps(ri, nextIndex, n) + totalSteps;
+                pq.push({steps, nextIndex, ki+1});
+            }
         }
-        memo[in_index][pos] = min_steps + 1;
-        return min_steps + 1;
+        return totalSteps + m;
     }
 };
