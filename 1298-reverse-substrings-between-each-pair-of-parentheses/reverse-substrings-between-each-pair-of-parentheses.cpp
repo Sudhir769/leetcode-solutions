@@ -1,15 +1,29 @@
 class Solution {
 public:
     string reverseParentheses(string s) {
-        stack<int> st;
-        string result = "";
+        int n = s.length();
+        stack<int>st;
+        vector<int>index(n, -1);
 
-        for(int i=0; i<s.length(); i++){
+        for(int i=0; i<n; i++){
             if(s[i] == '('){
-                st.push(result.length());
+                st.push(i);
             }else if(s[i] == ')'){
-                reverse(result.begin() + st.top(), result.end());
+                int j = st.top();
                 st.pop();
+
+                index[i] = j;
+                index[j] = i;
+            }
+        }
+
+        string result = "";
+        int dir = 1;
+
+        for(int i=0; i<n; i+=dir){
+            if(s[i] == '(' or s[i] == ')'){
+                i = index[i];
+                dir = -dir;
             }else{
                 result.push_back(s[i]);
             }
