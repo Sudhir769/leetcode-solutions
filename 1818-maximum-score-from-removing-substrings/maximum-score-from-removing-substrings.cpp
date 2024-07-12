@@ -2,23 +2,21 @@ class Solution {
 public:
     string solve(string s, string substr){
         int n = s.length();
-        stack<char>st;
 
-        for(auto ch:s){
-            if(!st.empty() and ch == substr[1] and st.top() == substr[0]){
-                st.pop();
-            }else{
-                st.push(ch);
+        int i=0, j=0;
+        for(j=0; j<n; j++){
+            s[i] = s[j];
+            i++;
+
+            if(i>1) {
+                if(s[i-2] == substr[0] and s[i-1] == substr[1]){
+                    i -= 2;
+                }
             }
         }
-
-        string result = "";
-        while(!st.empty()){
-            result.push_back(st.top());
-            st.pop();
-        }
-        reverse(result.begin(), result.end());
-        return result;
+        s.erase(s.begin()+i, s.end());
+        return s;
+        
     }
     int maximumGain(string s, int x, int y) {
         int n = s.length();
