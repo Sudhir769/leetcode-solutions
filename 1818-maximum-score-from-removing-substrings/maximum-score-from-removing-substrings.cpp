@@ -14,8 +14,7 @@ public:
                 }
             }
         }
-        s.erase(s.begin()+i, s.end());
-        return s;
+        return s.substr(0, i);
         
     }
     int maximumGain(string s, int x, int y) {
