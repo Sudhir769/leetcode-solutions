@@ -13,31 +13,68 @@ public:
         vis[node] = 2;
         st.push(node);
     }
-    vector<int> topoSort(vector<vector<int>>& edges, int &k){
+    // vector<int> topoSort(vector<vector<int>>& edges, int &k){
+    //     vector<int> adj[k+1];
+    //     for(auto &edge:edges){
+    //         adj[edge[0]].push_back(edge[1]);
+    //     }
+
+    //     vector<int> vis(k+1, 0);
+    //     stack<int>st;
+    //     bool cycle = false;
+    //     for(int i=1; i<=k; i++){
+    //         if(!vis[i]){
+    //             dfs(i, adj, vis, st, cycle);
+    //             if(cycle){
+    //                 return {};
+    //             }
+    //         }
+    //     }
+
+    //     vector<int>order;
+    //     while(!st.empty()){
+    //         order.push_back(st.top());
+    //         st.pop();
+    //     }
+    //     return order;
+    // }
+
+    vector<int> topoSort(vector<vector<int>>&edges, int &k){
         vector<int> adj[k+1];
+        vector<int>indegree(k+1, 0);
         for(auto &edge:edges){
             adj[edge[0]].push_back(edge[1]);
+            indegree[edge[1]]++;
         }
 
-        vector<int> vis(k+1, 0);
-        stack<int>st;
-        bool cycle = false;
+        queue<int>q;
+        int count = 0;
         for(int i=1; i<=k; i++){
-            if(!vis[i]){
-                dfs(i, adj, vis, st, cycle);
-                if(cycle){
-                    return {};
+            if(indegree[i] == 0){
+                q.push(i);
+                count++;
+            }
+        }
+        vector<int>topoOrder;
+        while(!q.empty()){
+            int u = q.front();
+            q.pop();
+            topoOrder.push_back(u);
+
+            for(int &v:adj[u]){
+                indegree[v]--;
+                if(indegree[v] == 0){
+                    q.push(v);
+                    count++;
                 }
             }
         }
-
-        vector<int>order;
-        while(!st.empty()){
-            order.push_back(st.top());
-            st.pop();
+        if(count != k){
+            return {};
         }
-        return order;
+        return topoOrder;
     }
+
     vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
         vector<int> topoRow = topoSort(rowConditions, k);
         vector<int> topoCol = topoSort(colConditions, k);
