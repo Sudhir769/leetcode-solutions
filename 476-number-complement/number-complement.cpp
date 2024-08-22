@@ -1,9 +1,16 @@
 class Solution {
 public:
     int findComplement(int num) {
-        int numBits = (int)(log2(num)) + 1;
-        unsigned int mask = (1U << numBits) - 1;
-        num = num ^ mask;
-        return num;
+        int i=0;
+        int comp = 0;
+
+        while(num){
+            if(!(num & 1)){
+                comp |= (1 << i);
+            }
+            num >>= 1;
+            i++;
+        }
+        return comp;
     }
 };
