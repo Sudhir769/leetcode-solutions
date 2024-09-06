@@ -15,7 +15,9 @@ public:
         ListNode* curr = head;
         while(curr and curr->next){
             if(st.find(curr->next->val) != st.end()){
+                ListNode* temp = curr->next;
                 curr->next =  curr->next->next;
+                delete(temp);
             }else{
                 curr = curr->next;
             }
