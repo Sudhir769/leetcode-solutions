@@ -9,13 +9,12 @@ public:
         ans.push_back({1, 1});
         if(numRows == 2) return ans;
 
+
         for(int i=3; i<=numRows; i++){
             vector<int> prev = ans.back();
 
-            for(auto k:prev) cout<<k<<" ";
-
             vector<int> curr(1, 1);
-            for(int j=1; j<=prev.size()-1; j++){
+            for(int j=1; j<i-1; j++){
                 int digit = prev[j-1] + prev[j];
                 curr.push_back(digit);
             }
