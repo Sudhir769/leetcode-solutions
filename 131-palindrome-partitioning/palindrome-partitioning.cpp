@@ -1,8 +1,7 @@
 class Solution {
 public:
-    int n = 0;
-    vector<vector<string>>ans;
-    bool isPalindrome(int start, int end, string s){
+    vector<vector<string>> ans;
+    bool isPalindrome(int start, int end, string &s){
         while(start <= end){
             if(s[start++] != s[end--]){
                 return false;
@@ -10,22 +9,24 @@ public:
         }
         return true;
     }
-    void solve(int i, string s, vector<string> temp){
-        if(i == n){
-            ans.push_back(temp);
+
+    void solve(int ind, string &s, vector<string> & path){
+        if(ind == s.length()){
+            ans.push_back(path);
             return;
         }
-        for(int j=i; j<n; j++){
-            if(isPalindrome(i, j, s)){
-                temp.push_back(s.substr(i, j-i+1));
-                solve(j+1, s, temp);
-                temp.pop_back();
+        for(int i=ind; i<s.length(); i++){
+            if(isPalindrome(ind, i, s)){
+                path.push_back(s.substr(ind, i-ind+1));
+                solve(i+1, s, path);
+                path.pop_back();
             }
         }
     }
+
     vector<vector<string>> partition(string s) {
-        n = s.length();
-        solve(0, s, {});
+        vector<string> path;
+        solve(0, s, path);
         return ans;
     }
 };
