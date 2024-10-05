@@ -4,13 +4,25 @@ public:
         int n = s1.length();
         int m = s2.length();
 
-        sort(s1.begin(), s1.end());
+        vector<int> freq1(26, 0), freq2(26, 0);
+        for(auto ch:s1){
+            freq1[ch - 'a']++;
+        }
 
-        for(int i=0; i<m; i++){
-            string substr = s2.substr(i, n);
-            sort(substr.begin(), substr.end());
+        int i=0, j=0;
 
-            if(s1 == substr)return true;
+        while(j < m){
+            freq2[s2[j] - 'a']++;
+
+            if(j-i+1 > n){
+                freq2[s2[i] - 'a']--;
+                i++;
+            }
+
+            if(freq1 == freq2){
+                return true;
+            }
+            j++;
         }
         return false;
     }
