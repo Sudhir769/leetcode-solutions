@@ -3,6 +3,8 @@ public:
     bool isCircularSentence(string s) {
         int n = s.length();
 
+        if(s[0] != s.back()) return false;
+
         for(int i=0; i<n; i++){
             if(s[i] == ' '){
                 if(s[i-1] != s[i+1]){
@@ -10,6 +12,6 @@ public:
                 }
             }
         }
-        return s[0] == s[n-1];
+        return true;
     }
 };
