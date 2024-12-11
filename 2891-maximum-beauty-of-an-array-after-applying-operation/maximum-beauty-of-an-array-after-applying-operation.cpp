@@ -2,16 +2,23 @@ class Solution {
 public:
     int maximumBeauty(vector<int>& nums, int k) {
         int n = nums.size();
-        sort(nums.begin(), nums.end());
+
+        vector<vector<int>> intervals;
+        for(int i=0; i<n; i++){
+            intervals.push_back({nums[i]-k, nums[i]+k});
+        }
+        sort(intervals.begin(), intervals.end());
+        // {{-1, 3}, {0, 4}, {2, 6}, {4, 8}}
+
+        queue<vector<int>> q;
 
         int result = 0;
-        int i=0, j=0;
-        while(i < n){
-            while(j < n and nums[j] <= nums[i] + 2*k){
-                j++;
+        for(auto interval:intervals){
+            while(!q.empty() and q.front()[1] < interval[0]){
+                q.pop();
             }
-            result = max(result, j-i);
-            i++;
+            q.push(interval);
+            result = max(result, (int)q.size());
         }
         return result;
     }
