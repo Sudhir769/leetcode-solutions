@@ -4,17 +4,17 @@ public:
         int n = nums.size();
         long long score = 0;
 
-        vector<vector<int>> vec(n, vector<int> (2, 0));
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
         vector<bool> vis(n, false);
 
         for(int i=0; i<n; i++){
-            vec[i] = {nums[i], i};
+            pq.push({nums[i], i});
         }
-        sort(vec.begin(), vec.end());
 
-        for(int i=0; i<n; i++){
-            int el = vec[i][0];
-            int ind = vec[i][1];
+        while(!pq.empty()){
+            int  el = pq.top()[0];
+            int ind = pq.top()[1];
+            pq.pop();
 
             if(vis[ind]){
                 continue;
