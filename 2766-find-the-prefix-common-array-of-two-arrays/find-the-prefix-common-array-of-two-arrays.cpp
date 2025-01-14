@@ -6,14 +6,21 @@ public:
         vector<int> result(n, 0);
         unordered_map<int, int> mp;
 
+        int cnt = 0;
         for(int i=0; i<n; i++){
+            mp[A[i]]++;
             mp[B[i]]++;
-            int cnt = 0;
-            for(int j=0; j<=i; j++){
-                if(mp.find(A[j]) != mp.end()){
-                    cnt++;
-                }
+            
+            if(mp[A[i]] == 2){
+                cnt++;
+                mp.erase(A[i]);
             }
+
+            if(mp[B[i]] == 2){
+                cnt++;
+                mp.erase(B[i]);
+            }
+
             result[i] = cnt;
         }
         return result;
