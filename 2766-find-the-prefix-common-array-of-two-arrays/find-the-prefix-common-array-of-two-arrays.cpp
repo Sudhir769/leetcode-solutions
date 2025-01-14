@@ -9,17 +9,10 @@ public:
         int cnt = 0;
         for(int i=0; i<n; i++){
             mp[A[i]]++;
-            mp[B[i]]++;
-            
-            if(mp[A[i]] == 2){
-                cnt++;
-                mp.erase(A[i]);
-            }
+            cnt += mp[A[i]] == 2;
 
-            if(mp[B[i]] == 2){
-                cnt++;
-                mp.erase(B[i]);
-            }
+            mp[B[i]]++;
+            cnt += mp[B[i]] == 2;
 
             result[i] = cnt;
         }
