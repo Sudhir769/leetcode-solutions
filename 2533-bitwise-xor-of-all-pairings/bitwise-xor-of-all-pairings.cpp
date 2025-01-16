@@ -5,21 +5,18 @@ public:
         int m = nums2.size();
 
         int result = 0;
-        unordered_map<long long, long long> mp;
-
-        for(int i=0; i<n; i++){
-            mp[nums1[i]] += m;
-        }
-
-        for(int j=0; j<m; j++) {
-            mp[nums2[j]] += n;
-        }
-
-        for(auto it:mp){
-            if(it.second % 2){
-                result ^= it.first;
+        
+        if(n % 2 != 0){
+            for (auto num:nums2){
+                result ^= num;
             }
         }
+        if(m % 2 != 0){
+            for (auto num:nums1){
+                result ^= num;
+            }
+        }
+
         return result;
     }
 };
