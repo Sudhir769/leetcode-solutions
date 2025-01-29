@@ -35,20 +35,34 @@ public:
 
 class Solution {
 public:
+    bool dfs(int u, int v, unordered_map<int, vector<int>>& adj, vector<bool> &vis){
+        vis[u] = true;
+
+        if(u == v) return true;
+
+        for(auto neigh:adj[u]){
+            if(vis[neigh]) continue;
+
+            if(dfs(neigh, v, adj, vis)){
+                return true;
+            }
+        }
+        return false;
+    }
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
         int n = edges.size();
-        
-        DSU dsu(n);
 
+        unordered_map<int, vector<int>> adj;
         for(auto edge:edges){
             int u = edge[0];
             int v = edge[1];
 
-            if(dsu.find(u) == dsu.find(v)){
+            vector<bool> vis(n+1, false);
+            if(adj.find(u) != adj.end() and adj.find(v) != adj.end() and dfs(u, v, adj, vis)){
                 return {u, v};
-            }
-
-            dsu.Union(u, v);
+            }    
+            adj[u].push_back(v);        
+            adj[v].push_back(u);        
         }
         return {};
     }
