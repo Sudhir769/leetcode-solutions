@@ -10,7 +10,7 @@ public:
         return true;
     }
 
-    void solve(int ind, string &s, vector<string> & path){
+    void solve(int ind, string &s, vector<string> &path){
         if(ind == s.length()){
             ans.push_back(path);
             return;
