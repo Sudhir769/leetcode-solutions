@@ -12,25 +12,24 @@
 class Solution {
 public:
     unordered_map<int, int> mp;
+    int n;
+    TreeNode* solve(vector<int>& inorder, vector<int>& preorder, int &index, int start, int end){
 
-    TreeNode* solve(vector<int>& inorder, int instart, int inend, 
-        vector<int>& preorder, int prestart, int preend){
-
-            if(prestart > preend or instart > inend) return NULL;
+            if(index >= n or start > end) return NULL;
             
-            TreeNode* root = new TreeNode(preorder[prestart]);
+            int element = preorder[index++];
+            TreeNode* root = new TreeNode(element);
 
-            int inroot = mp[root->val];
-            int numleft = inroot - instart;
+            int pos = mp[element];
 
-            root->left = solve(inorder, instart, inroot-1, preorder, prestart+1, prestart+numleft);
-            root->right = solve(inorder, inroot+1, inend, preorder, prestart+numleft+1, preend);
+            root->left = solve(inorder, preorder, index, start, pos-1);
+            root->right = solve(inorder, preorder, index, pos+1, end);
 
             return root;
     }
 
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        int n = preorder.size();
+        n = preorder.size();
         int m = inorder.size();
 
         if(n != m) return NULL;
@@ -39,7 +38,8 @@ public:
             mp[inorder[i]] = i;
         }
 
-        TreeNode* root = solve(inorder, 0, n-1, preorder, 0, n-1);
+        int index = 0;
+        TreeNode* root = solve(inorder, preorder, index, 0, n-1);
         return root;
     }
 };
