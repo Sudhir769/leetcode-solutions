@@ -44,6 +44,14 @@ public:
         mp.erase(node->key);
         length--;
     }
+
+    void deleteNode(Node* node, bool flag){
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+        mp.erase(node->key);
+        delete(node);
+        length--;
+    }
     
     int get(int key) {
         if(mp.count(key)){
@@ -67,7 +75,7 @@ public:
 
         Node* newNode = new Node(key, value);
         if(length >= capacity){
-            deleteNode(tail->prev);
+            deleteNode(tail->prev, true);
         }
         insertAtHead(newNode);
     }
