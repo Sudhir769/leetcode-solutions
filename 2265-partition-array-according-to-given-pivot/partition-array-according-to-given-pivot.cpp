@@ -4,27 +4,20 @@ public:
         int n = nums.size();
 
         vector<int> ans(n, 0);
-        int cntless = 0, equal = 0;
-        for(int i=0; i<n; i++){
-            if(nums[i] < pivot){
-                cntless++;
-            }else if(nums[i] == pivot){
-                equal++;
-            }
-        }
+        int less = 0, more = n-1;
 
-        int less = 0, pi = cntless, more = cntless + equal;
         for(int i=0; i<n; i++){
             if(nums[i] < pivot){
                 ans[less] = nums[i];
                 less++;
-            }else if(nums[i] == pivot){
-                ans[pi] = nums[i];
-                pi++;
-            }else{
-                ans[more] = nums[i];
-                more++;
             }
+            if(nums[n-i-1] > pivot){
+                ans[more] = nums[n-1-i];
+                more--;
+            }
+        }
+        for(int i=less; i<=more; i++){
+            ans[i] = pivot;
         }
         return ans;
     }
