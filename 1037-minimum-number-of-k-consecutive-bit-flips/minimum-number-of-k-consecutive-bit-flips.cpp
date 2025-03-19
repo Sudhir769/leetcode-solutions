@@ -4,22 +4,24 @@ public:
         int n = nums.size();
         int flips = 0;
 
-        int flipCnt = 0;
-        vector<bool> isFlipped(n, 0);
+        int flipCountPast = 0;
+        deque<int> dq;
 
         for(int i=0; i<n; i++){
-            if(i >= k and isFlipped[i-k] == true){
-                flipCnt--;
+            if(i >= k){
+                flipCountPast -= dq.front();
+                dq.pop_front();
             }
 
-            if(flipCnt % 2 == nums[i]){
+            if(flipCountPast % 2 == nums[i]){
                 if(i+k > n){
                     return -1;
                 }
-
-                flipCnt++;
+                flipCountPast++;
                 flips++;
-                isFlipped[i] = true;
+                dq.push_back(1);
+            }else{
+                dq.push_back(0);
             }
         }
         return flips;
